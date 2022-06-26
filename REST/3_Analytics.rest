@@ -1,0 +1,14 @@
+
+### activ3
+GET http://localhost:9999/api/v1/activ_3/2022-01-01/2022-12-15
+Content-Type: application/json
+
+
+### activ4
+GET http://localhost:9999/api/v1/activ_rep_common/2022-05-01/2022-05-20
+Content-Type: application/json
+
+
+### параметры текущего месяца
+GET http://localhost:9999/api/v1/analytic_params
+Content-Type: application/json

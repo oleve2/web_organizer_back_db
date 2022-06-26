@@ -1,0 +1,33 @@
+# Activ Normatives ==========================================================
+
+### activ normatives list
+GET http://localhost:9999/api/v1/activ_normativs
+Content-Type: application/json
+
+### activ normatives new
+POST http://localhost:9999/api/v1/activ_normativs_new
+Content-Type: application/json
+
+{
+  "name": "test norm",
+  "norm_period": "week",
+  "norm_measure": "km",
+  "norm_value": 15
+}
+
+### activ normatives update
+POST http://localhost:9999/api/v1/activ_normativs_upd
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "test norm upd",
+  "norm_period": "week upd",
+  "norm_measure": "km upd",
+  "norm_value": 20
+}
+
+
+### activ normatives del
+POST http://localhost:9999/api/v1/activ_normativs_del/3
+Content-Type: application/json

@@ -1,0 +1,32 @@
+# Activ Names ==========================================================
+### activities - List
+GET http://localhost:9999/api/v1/activ_names
+Content-Type: application/json
+
+### activities - create new
+POST http://localhost:9999/api/v1/activ_names_new
+Content-Type: application/json
+
+{
+  "name": "activ Кукусики",
+  "date_start": "2022-01-01",
+  "date_end": "2023-01-01",
+  "norm_id": 0
+}
+
+### activities - update by id
+POST http://localhost:9999/api/v1/activ_names_upd
+Content-Type: application/json
+
+{
+  "id": 5,
+  "name": "activ Кукусики upd",
+  "date_start": "2022-01-02",
+  "date_end": "2023-01-02",
+  "norm_id": 0
+}
+
+
+### activities - delete by id
+POST http://localhost:9999/api/v1/activ_names_del/5
+Content-Type: application/json

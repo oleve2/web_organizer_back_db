@@ -1,0 +1,42 @@
+
+###
+GET http://localhost:9999/api/v1/echo
+Content-Type: application/json
+
+### all posts
+GET http://localhost:9999/api/v1/allPosts
+Content-Type: application/json
+
+### post by id
+GET http://localhost:9999/api/v1/post/63
+Content-Type: application/json
+
+### insert post
+POST http://localhost:9999/api/v1/postNew
+Content-Type: application/json
+
+{
+  "id": 0,
+  "part": "2022",
+  "text": "b1",
+  "theme": "b1",
+  "title": "b1"
+}
+
+### update post
+POST http://localhost:9999/api/v1/postUpdate
+Content-Type: application/json
+
+{
+  "id": 553,
+  "part": "2022",
+  "text": "bb",
+  "theme": "bb",
+  "title": "bb"
+}
+
+### delete post by id
+POST http://localhost:9999/api/v1/postDelete/63
+Content-Type: application/json
+
+

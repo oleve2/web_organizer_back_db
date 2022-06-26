@@ -1,0 +1,32 @@
+# Activ Logs ==========================================================
+
+### activ logs list (between dates and )
+GET http://localhost:9999/api/v1/activ_logs
+Content-Type: application/json
+
+### activ logs new
+POST http://localhost:9999/api/v1/activ_logs_new
+Content-Type: application/json
+
+{
+  "activ_name_id": 4,
+  "activ_norm_id": 4,
+  "activ_date": "2020-04-04",
+  "activ_value": 100
+}
+
+### activ logs update
+POST http://localhost:9999/api/v1/activ_logs_upd
+Content-Type: application/json
+
+{
+  "id": 7,
+  "activ_name_id": 41,
+  "activ_norm_id": 41,
+  "activ_date": "2020-04-05",
+  "activ_value": 141
+}
+
+### activ logs delete
+POST http://localhost:9999/api/v1/activ_logs_del/7
+Content-Type: application/json
