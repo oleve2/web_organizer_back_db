@@ -6,6 +6,7 @@ TODO.md
 tmp
 
 .ipynb_checkpoints/
+dbcopies/
 
 # env files
 .env
