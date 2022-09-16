@@ -1,10 +1,12 @@
+@URL = http://localhost:8888
+
 # Activ Names ==========================================================
 ### activities - List
-GET http://localhost:9999/api/v1/activ_names
+GET {{URL}}/api/v1/activ_names
 Content-Type: application/json
 
 ### activities - create new
-POST http://localhost:9999/api/v1/activ_names_new
+POST {{URL}}/api/v1/activ_names_new
 Content-Type: application/json
 
 {
@@ -15,7 +17,7 @@ Content-Type: application/json
 }
 
 ### activities - update by id
-POST http://localhost:9999/api/v1/activ_names_upd
+POST {{URL}}/api/v1/activ_names_upd
 Content-Type: application/json
 
 {
@@ -28,5 +30,5 @@ Content-Type: application/json
 
 
 ### activities - delete by id
-POST http://localhost:9999/api/v1/activ_names_del/5
+POST {{URL}}/api/v1/activ_names_del/5
 Content-Type: application/json

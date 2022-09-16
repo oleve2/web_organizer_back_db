@@ -1,11 +1,13 @@
+@URL = http://localhost:8888
+
 # Activ Normatives ==========================================================
 
 ### activ normatives list
-GET http://localhost:9999/api/v1/activ_normativs
+GET {{URL}}/api/v1/activ_normativs
 Content-Type: application/json
 
 ### activ normatives new
-POST http://localhost:9999/api/v1/activ_normativs_new
+POST {{URL}}/api/v1/activ_normativs_new
 Content-Type: application/json
 
 {
@@ -16,7 +18,7 @@ Content-Type: application/json
 }
 
 ### activ normatives update
-POST http://localhost:9999/api/v1/activ_normativs_upd
+POST {{URL}}/api/v1/activ_normativs_upd
 Content-Type: application/json
 
 {
@@ -29,5 +31,5 @@ Content-Type: application/json
 
 
 ### activ normatives del
-POST http://localhost:9999/api/v1/activ_normativs_del/3
+POST {{URL}}/api/v1/activ_normativs_del/3
 Content-Type: application/json

@@ -1,11 +1,13 @@
+@URL = http://localhost:8888
+
 # Activ Logs ==========================================================
 
 ### activ logs list (between dates and )
-GET http://localhost:9999/api/v1/activ_logs
+GET {{URL}}/api/v1/activ_logs
 Content-Type: application/json
 
 ### activ logs new
-POST http://localhost:9999/api/v1/activ_logs_new
+POST {{URL}}/api/v1/activ_logs_new
 Content-Type: application/json
 
 {
@@ -16,7 +18,7 @@ Content-Type: application/json
 }
 
 ### activ logs update
-POST http://localhost:9999/api/v1/activ_logs_upd
+POST {{URL}}/api/v1/activ_logs_upd
 Content-Type: application/json
 
 {
@@ -28,5 +30,5 @@ Content-Type: application/json
 }
 
 ### activ logs delete
-POST http://localhost:9999/api/v1/activ_logs_del/7
+POST {{URL}}/api/v1/activ_logs_del/7
 Content-Type: application/json

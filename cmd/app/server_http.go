@@ -61,8 +61,8 @@ func (s *Server) Init() error {
 
 		// analytics
 		r.Get("/analytic_params", s.handleAnalyticParams)
-		r.Get("/activ_3/{date_from}/{date_to}", s.handleActiv3)
-		r.Get("/activ_rep_common/{date_from}/{date_to}", s.handleActivRepCommon)
+		r.Get("/common_graphs/{date_from}/{date_to}", s.handleCommongraphs)         // handleActiv3
+		r.Get("/individual_graphs/{date_from}/{date_to}", s.handleIndividualGraphs) // handleActivRepCommon
 	})
 
 	return nil

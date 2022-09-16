@@ -27,6 +27,7 @@ func (s *Service) ActivLogsAll() ([]*models.ActivityLogDTO, error) {
 		return nil, err
 	}
 	defer db.Close()
+
 	rows, err := db.Query(`
 	select 
 	T1.id, T1.activ_name_id, T1.activ_norm_id, T1.activ_date, T1.activ_value,
@@ -39,6 +40,7 @@ func (s *Service) ActivLogsAll() ([]*models.ActivityLogDTO, error) {
 		return nil, err
 	}
 	defer rows.Close()
+
 	activLogs := make([]*models.ActivityLogDTO, 0)
 	for rows.Next() {
 		tmp := &models.ActivityLogDTO{}
@@ -62,6 +64,7 @@ func (s *Service) ActivLogsNew(newActivLog *models.ActivityLogDTO) error {
 		return err
 	}
 	defer db.Close()
+
 	_, err = db.Exec("insert into activ_log (activ_name_id, activ_norm_id, activ_date, activ_value) values (?, ?, ?, ?)",
 		newActivLog.ActivNameId, newActivLog.ActivNormId, newActivLog.ActivDate, newActivLog.ActivValue,
 	)
@@ -79,6 +82,7 @@ func (s *Service) ActivLogsUpdate(updActivLog *models.ActivityLogDTO) error {
 		return err
 	}
 	defer db.Close()
+
 	_, err = db.Exec("update activ_log set activ_name_id=?, activ_norm_id=?, activ_date=?, activ_value=? where id=?",
 		updActivLog.ActivNameId, updActivLog.ActivNormId, updActivLog.ActivDate, updActivLog.ActivValue, updActivLog.Id,
 	)
@@ -96,6 +100,7 @@ func (s *Service) ActivLogsDelById(delId string) error {
 		return err
 	}
 	defer db.Close()
+
 	_, err = db.Exec("delete from activ_log where id=?", delId)
 	if err != nil {
 		log.Println(err)
