@@ -10,7 +10,6 @@ import (
 	models "webapp3/pkg/models"
 
 	"github.com/go-chi/chi"
-	//"github.com/go-chi/chi/v5"
 )
 
 // echo
@@ -75,7 +74,6 @@ func (s *Server) handlePostById(writer http.ResponseWriter, request *http.Reques
 
 // save post updates to DB
 func (s *Server) handleSaveUpdates(writer http.ResponseWriter, request *http.Request) {
-	//fmt.Println("entered PUT handleSaveUpdates")
 	// request body
 	var dataUpdate *models.PostDTO
 	err := json.NewDecoder(request.Body).Decode(&dataUpdate)
@@ -84,7 +82,6 @@ func (s *Server) handleSaveUpdates(writer http.ResponseWriter, request *http.Req
 		//http.Error(writer, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
-	//fmt.Printf("dataUpdate = %+v\n", dataUpdate)
 	// save to DB (backend)
 	err = s.backendSvc.UpdatePostById(dataUpdate)
 	resp := &models.ResponseDTO{Status: "OK"}
@@ -104,7 +101,6 @@ func (s *Server) handleInsertNewPost(writer http.ResponseWriter, request *http.R
 		log.Println(err)
 		return
 	}
-	//fmt.Printf("dataInsert = %+v\n", dataInsert)
 	err = s.backendSvc.InsertNewPost(dataInsert)
 	if err != nil {
 		log.Println(err)
@@ -122,7 +118,6 @@ func (s *Server) handleInsertNewPost(writer http.ResponseWriter, request *http.R
 // delete post by id
 func (s *Server) handleDeletePostById(writer http.ResponseWriter, request *http.Request) {
 	postID := chi.URLParam(request, "post_id")
-	fmt.Printf("deleting = %+v\n", postID)
 	err := s.backendSvc.DeletePostById(postID)
 	if err != nil {
 		log.Println(err)
@@ -139,8 +134,6 @@ func (s *Server) handleDeletePostById(writer http.ResponseWriter, request *http.
 
 // ------------------------------------------------------------------------------------------------------
 // Activities - names
-
-//
 func (s *Server) handleActivitiesNames(writer http.ResponseWriter, request *http.Request) {
 	dataResp, err := s.backendSvc.GetActivitiesList()
 	if err != nil {
@@ -155,7 +148,6 @@ func (s *Server) handleActivitiesNames(writer http.ResponseWriter, request *http
 	WriteAnswer(dataJSON, writer)
 }
 
-//
 func (s *Server) handleActivitiesNamesNew(writer http.ResponseWriter, request *http.Request) {
 	var dataNewActiv *models.ActivityDTO
 	err := json.NewDecoder(request.Body).Decode(&dataNewActiv)
@@ -177,7 +169,6 @@ func (s *Server) handleActivitiesNamesNew(writer http.ResponseWriter, request *h
 	WriteAnswer(dataJSON, writer)
 }
 
-//
 func (s *Server) handleActivitiesNamesUpd(writer http.ResponseWriter, request *http.Request) {
 	var dataUpdActiv *models.ActivityDTO
 	err := json.NewDecoder(request.Body).Decode(&dataUpdActiv)
@@ -199,10 +190,8 @@ func (s *Server) handleActivitiesNamesUpd(writer http.ResponseWriter, request *h
 	WriteAnswer(dataJSON, writer)
 }
 
-//
 func (s *Server) handleActivitiesNamesDel(writer http.ResponseWriter, request *http.Request) {
 	delId := chi.URLParam(request, "del_id")
-	//fmt.Printf("deleting = %+v\n", delId)
 	err := s.backendSvc.DeleteNewActivById(delId) //delete
 	if err != nil {
 		log.Println(err)
@@ -367,12 +356,11 @@ func (s *Server) handleActivitiesLogsDel(writer http.ResponseWriter, request *ht
 
 // ------------------------------------------------------------------------------------------------------
 // Activities - analytics
-
-func (s *Server) handleActiv3(writer http.ResponseWriter, request *http.Request) {
+func (s *Server) handleCommongraphs(writer http.ResponseWriter, request *http.Request) {
 	dateFrom := chi.URLParam(request, "date_from")
 	dateTo := chi.URLParam(request, "date_to")
 
-	data, err := s.backendSvc.AnalyticsActiv3(dateFrom, dateTo)
+	data, err := s.backendSvc.PrepareCommonGraphs(dateFrom, dateTo) //AnalyticsActiv3
 	if err != nil {
 		log.Println(err)
 		return
@@ -386,20 +374,15 @@ func (s *Server) handleActiv3(writer http.ResponseWriter, request *http.Request)
 	WriteAnswer(dataJSON, writer)
 }
 
-func (s *Server) handleActivRepCommon(writer http.ResponseWriter, request *http.Request) {
-	/**/
+func (s *Server) handleIndividualGraphs(writer http.ResponseWriter, request *http.Request) {
 	dateFrom := chi.URLParam(request, "date_from")
 	dateTo := chi.URLParam(request, "date_to")
 
-	data, err := s.backendSvc.Activ4CommonGraphByDates(dateFrom, dateTo)
+	data, err := s.backendSvc.PrepareIndivGraphs(dateFrom, dateTo) //Activ4CommonGraphByDates
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	/*fmt.Println(data.Labels)
-	for _, v := range data.Datasets {
-		fmt.Printf("%+v\n", v)
-	}*/
 
 	dataJSON, err := json.Marshal(data)
 	if err != nil {
@@ -416,7 +399,6 @@ func (s *Server) handleAnalyticParams(writer http.ResponseWriter, request *http.
 	currentYear, currentMonth, _ := d.Date()
 	df := time.Date(currentYear, currentMonth, 1, 0, 0, 0, 0, currentLocation)
 	dt := df.AddDate(0, 1, 0)
-	//fmt.Println(df, dt)
 
 	data := &models.ParamsDates{DateFrom: df.String()[:10], DateTo: dt.String()[:10]}
 	dataJSON, err := json.Marshal(data)
