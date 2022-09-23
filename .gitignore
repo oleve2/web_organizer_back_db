@@ -7,6 +7,7 @@ tmp
 
 .ipynb_checkpoints/
 dbcopies/
+static/
 
 # env files
 .env

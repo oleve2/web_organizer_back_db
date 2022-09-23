@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	backendServ "webapp3/pkg/backend"
+	updownServ "webapp3/pkg/updownload"
 
 	"github.com/go-chi/chi"
 )
@@ -11,16 +12,19 @@ import (
 type Server struct {
 	mux        chi.Router
 	backendSvc *backendServ.Service
+	upDownSvc  *updownServ.Service
 }
 
 // NewServer
 func NewServer(
 	mux chi.Router,
 	backendSvc *backendServ.Service,
+	upDownSvc *updownServ.Service,
 ) *Server {
 	return &Server{
 		mux:        mux,
 		backendSvc: backendSvc,
+		upDownSvc:  upDownSvc,
 	}
 }
 
@@ -63,6 +67,10 @@ func (s *Server) Init() error {
 		r.Get("/analytic_params", s.handleAnalyticParams)
 		r.Get("/common_graphs/{date_from}/{date_to}", s.handleCommongraphs)         // handleActiv3
 		r.Get("/individual_graphs/{date_from}/{date_to}", s.handleIndividualGraphs) // handleActivRepCommon
+
+		// serving files
+		r.Get("/files_list", s.handleFilesList)
+		r.Post("/form_upload", s.handleFormUpload)
 	})
 
 	return nil

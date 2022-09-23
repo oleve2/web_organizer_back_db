@@ -408,3 +408,72 @@ func (s *Server) handleAnalyticParams(writer http.ResponseWriter, request *http.
 	}
 	WriteAnswer(dataJSON, writer)
 }
+
+// static files handler
+func (s *Server) handleFilesList(writer http.ResponseWriter, request *http.Request) {
+	files, err := s.upDownSvc.GetStaticFolderContent()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	data := &models.FilesListDTO{
+		FilesList: files,
+		ServeURL:  s.upDownSvc.ServeURL,
+	}
+
+	dataJSON, err := json.Marshal(data)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	WriteAnswer(dataJSON, writer)
+}
+
+// form upload
+func (s *Server) handleFormUpload(writer http.ResponseWriter, request *http.Request) {
+	request.ParseMultipartForm(200 * 1024)
+
+	/*
+		for k, v := range request.Form {
+			fmt.Println(k, v)
+		}
+		formVal1 := request.FormValue("val1")
+		formVal2 := request.FormValue("val2")
+		fmt.Printf("formVal1=%s  formVal2=%s\n", formVal1, formVal2)
+	*/
+
+	// save multiple files
+	// https://socketloop.com/tutorials/upload-multiple-files-golang
+	files := request.MultipartForm.File["dataFile"]
+
+	for i, _ := range files { // loop through the files one by one
+		err := s.upDownSvc.SaveMultipleFiles(files, i)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	}
+
+	// save one file
+	/*
+		file, fileheader, err := request.FormFile("dataFile")
+		if err != nil {
+			fmt.Println("Error Retrieving the File")
+			fmt.Println(err)
+			return
+		}
+		fmt.Printf("Uploaded File: %+v %d\n", fileheader.Filename, fileheader.Size)
+		defer file.Close()
+		err = s.upDownSvc.SaveFileFromFormToFolder(file, fileheader)
+	*/
+
+	// response
+	data := "form recieved"
+	dataJSON, err := json.Marshal(data)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	WriteAnswer(dataJSON, writer)
+}

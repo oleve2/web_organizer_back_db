@@ -1,0 +1,6 @@
+@URL = http://localhost:8888
+
+### 
+GET {{URL}}/api/v1/files_list
+Content-Type: application/json
+
