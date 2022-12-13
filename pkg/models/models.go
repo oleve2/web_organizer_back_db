@@ -1,14 +1,17 @@
 package models
 
 // --------------------------------
+// models.go
+
 // models for postBase
 
 type PostDTO struct {
-	Id    int    `json:"id"`
-	Title string `json:"title"`
-	Text  string `json:"text"`
-	Theme string `json:"theme"`
-	Part  string `json:"part"`
+	Id       int    `json:"id"`
+	Title    string `json:"title"`
+	Text     string `json:"text"`
+	Theme    string `json:"theme"`
+	Part     string `json:"part"`
+	TagsList string `json:"tags_list"`
 }
 
 type ResponseDTO struct {

@@ -20,7 +20,7 @@ func (s *Service) GetAllPosts() ([]*models.PostDTO, error) {
 	}
 
 	defer db.Close()
-	rows, err := db.Query("select id, title, text, theme, part from posts order by theme, title")
+	rows, err := db.Query("select id, title, text, theme, part, tags_list from posts order by theme, title")
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
@@ -31,7 +31,7 @@ func (s *Service) GetAllPosts() ([]*models.PostDTO, error) {
 
 	for rows.Next() {
 		p := &models.PostDTO{}
-		err := rows.Scan(&p.Id, &p.Title, &p.Text, &p.Theme, &p.Part)
+		err := rows.Scan(&p.Id, &p.Title, &p.Text, &p.Theme, &p.Part, &p.TagsList)
 		if err != nil {
 			fmt.Println(err)
 			continue
@@ -51,7 +51,7 @@ func (s *Service) GetOnePostByID(id string) (*models.PostDTO, error) {
 	}
 
 	defer db.Close()
-	query := fmt.Sprintf(`select id, title, text, theme, part from posts where id=%s`, id)
+	query := fmt.Sprintf(`select id, title, text, theme, part, tags_list from posts where id=%s`, id)
 	rows, err := db.Query(query)
 	if err != nil {
 		fmt.Println(err)
@@ -63,7 +63,7 @@ func (s *Service) GetOnePostByID(id string) (*models.PostDTO, error) {
 
 	for rows.Next() {
 		p := &models.PostDTO{}
-		err := rows.Scan(&p.Id, &p.Title, &p.Text, &p.Theme, &p.Part)
+		err := rows.Scan(&p.Id, &p.Title, &p.Text, &p.Theme, &p.Part, &p.TagsList)
 		if err != nil {
 			fmt.Println(err)
 			continue
@@ -82,8 +82,8 @@ func (s *Service) InsertNewPost(post *models.PostDTO) error {
 		return err
 	}
 	defer db.Close()
-	_, err = db.Exec("insert into posts (title, text, theme, part) values (?, ?, ?, ?)",
-		post.Title, post.Text, post.Theme, post.Part,
+	_, err = db.Exec("insert into posts (title, text, theme, part, tags_list) values (?, ?, ?, ?, ?)",
+		post.Title, post.Text, post.Theme, post.Part, post.TagsList,
 	)
 	if err != nil {
 		log.Println(err)
@@ -100,8 +100,8 @@ func (s *Service) UpdatePostById(post *models.PostDTO) error {
 		return err
 	}
 	defer db.Close()
-	_, err = db.Exec("update posts set title=?, text=?, theme=?, part=? where id=?",
-		post.Title, post.Text, post.Theme, post.Part, post.Id,
+	_, err = db.Exec("update posts set title=?, text=?, theme=?, part=?, tags_list=? where id=?",
+		post.Title, post.Text, post.Theme, post.Part, post.TagsList, post.Id,
 	)
 	if err != nil {
 		log.Println(err)
