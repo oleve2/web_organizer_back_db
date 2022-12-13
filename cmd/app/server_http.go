@@ -4,15 +4,17 @@ import (
 	"net/http"
 
 	backendServ "webapp3/pkg/backend"
+	backendGormServ "webapp3/pkg/backend_gorm"
 	updownServ "webapp3/pkg/updownload"
 
 	"github.com/go-chi/chi"
 )
 
 type Server struct {
-	mux        chi.Router
-	backendSvc *backendServ.Service
-	upDownSvc  *updownServ.Service
+	mux             chi.Router
+	backendSvc      *backendServ.Service
+	upDownSvc       *updownServ.Service
+	backendGormServ *backendGormServ.Service
 }
 
 // NewServer
@@ -20,11 +22,13 @@ func NewServer(
 	mux chi.Router,
 	backendSvc *backendServ.Service,
 	upDownSvc *updownServ.Service,
+	backendGormServ *backendGormServ.Service,
 ) *Server {
 	return &Server{
-		mux:        mux,
-		backendSvc: backendSvc,
-		upDownSvc:  upDownSvc,
+		mux:             mux,
+		backendSvc:      backendSvc,
+		upDownSvc:       upDownSvc,
+		backendGormServ: backendGormServ,
 	}
 }
 
@@ -71,6 +75,12 @@ func (s *Server) Init() error {
 		// serving files
 		r.Get("/files_list", s.handleFilesList)
 		r.Post("/form_upload", s.handleFormUpload)
+
+		// tags
+		r.Get("/tags_all", s.handleTagsAll)
+		r.Post("/tags_insertOne", s.handleTagsInsertOne)
+		r.Post("/tags_updateOne", s.handleTagsUpdateOne)
+		r.Post("/tags_deleteOne/{del_id}", s.handleTagsDeleteOne)
 	})
 
 	return nil

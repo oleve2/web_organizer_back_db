@@ -1,0 +1,29 @@
+@URL = http://localhost:9990
+
+### tags all
+GET {{URL}}/api/v1/tags_all
+Content-Type: application/json
+
+### tags insertOne
+POST {{URL}}/api/v1/tags_insertOne
+Content-Type: application/json
+
+{
+  "name": "important",
+  "color": "#ffc400"
+}
+
+### tags updateOne
+POST {{URL}}/api/v1/tags_updateOne
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "one yellow mod",
+  "color": "#ffc40F"
+}
+
+### tags deleteOne
+POST {{URL}}/api/v1/tags_deleteOne/1
+Content-Type: application/json
+

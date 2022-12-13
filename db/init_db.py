@@ -11,33 +11,34 @@ before launching script:
 def make_tables(conn):
   sql_01_01_posts = """
   CREATE TABLE "posts" (
-    "id"	INTEGER,
-    "title"	TEXT,
-    "text"	TEXT,
-    "theme"	TEXT,
-    "part"	TEXT,
+    "id"    INTEGER,
+    "title" TEXT,
+    "text"  TEXT,
+    "theme" TEXT,
+    "part"  TEXT,
+    "tags_list" TEXT,
     PRIMARY KEY("id" AUTOINCREMENT)
   );
   """
 
   sql_01_02_activ_log = """
   CREATE TABLE "activ_log" (
-    "id"	INTEGER,
-    "activ_name_id"	INTEGER NOT NULL,
-    "activ_norm_id"	INTEGER NOT NULL,
-    "activ_date"	TEXT NOT NULL,
-    "activ_value"	INTEGER NOT NULL,
+    "id"    INTEGER,
+    "activ_name_id" INTEGER NOT NULL,
+    "activ_norm_id" INTEGER NOT NULL,
+    "activ_date"    TEXT NOT NULL,
+    "activ_value"   INTEGER NOT NULL,
     PRIMARY KEY("id" AUTOINCREMENT)
   );
   """
 
   sql_01_03_activ_names = """
   CREATE TABLE "activ_names" (
-    "id"	INTEGER,
-    "name"	TEXT,
-    "date_start"	TEXT,
-    "date_end"	TEXT,
-    "norm_id"	INTEGER,
+    "id"    INTEGER,
+    "name"  TEXT UNIQUE,
+    "date_start"    TEXT,
+    "date_end"  TEXT,
+    "norm_id"   INTEGER,
     PRIMARY KEY("id" AUTOINCREMENT)
   );
   """

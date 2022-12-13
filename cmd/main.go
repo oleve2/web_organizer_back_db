@@ -9,9 +9,12 @@ import (
 	"strings"
 
 	"github.com/joho/godotenv"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 
 	"webapp3/cmd/app"
 	backendServ "webapp3/pkg/backend"
+	backendGormServ "webapp3/pkg/backend_gorm"
 	updownServ "webapp3/pkg/updownload"
 
 	"github.com/go-chi/chi"
@@ -68,15 +71,25 @@ func execute(addr string, sqlitePath string) error {
 	filesDir := http.Dir(defaultStaticFilePath)
 	FileServer(mux, defaultStaticURL, filesDir) // параметры в const
 
+	// backend GORM service
+	dbSqlite, err := gorm.Open(sqlite.Open(sqlitePath), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	backGormServ := backendGormServ.NewService(dbSqlite)
+	backGormServ.Init()
+
+	// -------------------------------
 	// backend http server
 	application := app.NewServer(
 		mux,
 		backendSvc,
 		updownServ,
+		backGormServ,
 	)
 
 	// init app
-	err := application.Init()
+	err = application.Init()
 	if err != nil {
 		log.Println(err)
 		return err
