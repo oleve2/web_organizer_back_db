@@ -81,8 +81,8 @@ def make_tables(conn):
 # ------------------------------------
 def make_dates(conn):
   total_dates = []
-  date_from = date.fromisoformat('2022-01-01')
-  date_to = date.fromisoformat('2024-01-01')
+  date_from = date.fromisoformat('2023-01-01')
+  date_to = date.fromisoformat('2025-01-01')
 
   curr_date = date_from
   while (curr_date <= date_to):
@@ -109,7 +109,7 @@ def make_dates(conn):
 
 # ====================================
 if __name__ == '__main__':
-  conn = sqlite3.connect('./sample_db.db')
+  conn = sqlite3.connect('./prd.db')
   # tables
   make_tables(conn)
   # dates

@@ -7,6 +7,7 @@ import (
 	"log"
 	"mime/multipart"
 	"os"
+	"webapp3/pkg/models"
 )
 
 type Service struct {
@@ -38,18 +39,27 @@ func (s *Service) InitCheck() (bool, error) {
 }
 
 // download
-func (s *Service) GetStaticFolderContent() ([]string, error) {
-	res := make([]string, 0)
+func (s *Service) GetStaticFolderContent() ([]*models.FileInfo, error) {
+	//res := make([]string, 0)
+	fileList := make([]*models.FileInfo, 0)
+	folderList := make([]*models.FileInfo, 0)
+
 	files, err := ioutil.ReadDir(s.FolderPath)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, file := range files {
-		if !file.IsDir() {
-			res = append(res, file.Name())
+		tmp := &models.FileInfo{Name: file.Name(), IsDir: file.IsDir()}
+		if file.IsDir() {
+			folderList = append(folderList, tmp)
+		} else {
+			fileList = append(fileList, tmp)
 		}
 	}
+
+	res := append(folderList, fileList...)
+
 	return res, nil
 }
 
