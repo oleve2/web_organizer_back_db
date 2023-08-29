@@ -1,6 +1,30 @@
-@URL = http://localhost:8888
+@URL = http://localhost:9990
 
 ### 
 GET {{URL}}/api/v1/files_list
 Content-Type: application/json
 
+
+### update filename
+POST {{URL}}/api/v1/files_updateItem
+Content-Type: application/json
+
+{
+  "file_new_name": "1234_2.txt",
+  "file_original": {
+    "file_name": "1_rename.txt",
+    "file_isdir": false
+  }
+}
+
+### delete filename
+POST {{URL}}/api/v1/files_deleteItem
+Content-Type: application/json
+
+{
+  "file_new_name": "",
+  "file_original": {
+    "file_name": "123_modified.txt",
+    "file_isdir": false
+  }
+}

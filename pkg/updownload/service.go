@@ -1,6 +1,7 @@
 package uploaddownload
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -91,7 +92,71 @@ func (s *Service) SaveMultipleFiles(files []*multipart.FileHeader, i int) error 
 	return nil
 }
 
+func (s *Service) Files_UpdateDeleteItem(flagUpdDel string, updateItemDTO *models.FilesUpdateItemDTO) error {
+	// find file by Name and IsDir
+	files, err := s.GetStaticFolderContent()
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	var oldFileExists bool = false
+	var newFileNameExists bool = false
+
+	for _, f := range files {
+		if (f.Name == updateItemDTO.OriginalFile.Name) && (f.IsDir == updateItemDTO.OriginalFile.IsDir) {
+			oldFileExists = true
+		}
+		if f.Name == updateItemDTO.FileNewName {
+			newFileNameExists = true
+		}
+	}
+
+	// исходный файл есть, файла с новым именем нет
+	// if found - rename/delete the file and return nil
+	// if not found - return error
+	fmt.Println("oldFileExists=", oldFileExists, " newFileNameExists=", newFileNameExists)
+
+	//
+	if flagUpdDel == "update" {
+		if (oldFileExists == true) && (newFileNameExists == false) {
+			// update
+			err = os.Rename(s.FolderPath+"/"+updateItemDTO.OriginalFile.Name, s.FolderPath+"/"+updateItemDTO.FileNewName)
+			if err != nil {
+				log.Println(err)
+				return err
+			}
+			fmt.Println("update done")
+		}
+		if oldFileExists == false {
+			return errors.New("Original file does not exist")
+		}
+		if newFileNameExists == true {
+			return errors.New("New name for file to rename is occupied")
+		}
+	}
+
+	//
+	if flagUpdDel == "delete" {
+		if oldFileExists == true {
+			// delete
+			err = os.Remove(s.FolderPath + "/" + updateItemDTO.OriginalFile.Name)
+			if err != nil {
+				log.Println(err)
+				return err
+			}
+			fmt.Println("delete done")
+		}
+		if oldFileExists == false {
+			return errors.New("Original file does not exist")
+		}
+	}
+
+	return nil
+}
+
 /*
+// -------------------------------------------------------
 // upload single (not actual)
 func (s *Service) SaveFileFromFormToFolder(file multipart.File, fileheader *multipart.FileHeader) error {
 	//=== start
