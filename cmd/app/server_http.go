@@ -75,6 +75,8 @@ func (s *Server) Init() error {
 		// serving files
 		r.Get("/files_list", s.handleFilesList)
 		r.Post("/form_upload", s.handleFormUpload)
+		r.Post("/files_updateItem", s.handleFilesUpdateItem)
+		r.Post("/files_deleteItem", s.handleFilesDeleteItem)
 
 		// tags
 		r.Get("/tags_all", s.handleTagsAll)

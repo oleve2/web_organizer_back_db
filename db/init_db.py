@@ -107,6 +107,22 @@ def make_dates(conn):
   conn.commit()
 
 
+# ------------------------------------
+def insert_dummy_posts(conn):
+  sql_insert_01 = """
+  insert into posts (title, text, theme, part, tags_list) values
+  ('A1 title 1','some random text A1','P1 Theme 1','PART 1', '[]'),
+  ('A1 title 2','some random text A2','P1 Theme 2','PART 1', '[]'),
+  ('A1 title 1','some random text A3','P2 Theme 1','PART 2', '[]')
+  """
+  cur1 = conn.cursor()
+  cur1.execute(sql_insert_01)
+  conn.commit()
+  print('posts dummy data inserted')
+
+   
+
+
 # ====================================
 if __name__ == '__main__':
   conn = sqlite3.connect('./prd.db')
@@ -114,6 +130,8 @@ if __name__ == '__main__':
   make_tables(conn)
   # dates
   make_dates(conn)
-
+  # dummy posts data
+  insert_dummy_posts(conn)
+  
   conn.close()
 

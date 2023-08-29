@@ -26,11 +26,23 @@ func (s *Server) handleEcho(writer http.ResponseWriter, request *http.Request) {
 
 // helpers ----------------------------------------
 
-// write response
+// write responses
 func WriteAnswer(dataJSON []byte, writer http.ResponseWriter) error {
 	writer.Header().Set("Content-Type", "application/json")
 	writer.Header().Set("Access-Control-Allow-Origin", "*")
 	writer.WriteHeader(http.StatusOK)
+	_, err := writer.Write(dataJSON)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
+}
+
+func WriteAnswer2(dataJSON []byte, status int, writer http.ResponseWriter) error {
+	writer.Header().Set("Content-Type", "application/json")
+	writer.Header().Set("Access-Control-Allow-Origin", "*")
+	//writer.WriteHeader(status)
 	_, err := writer.Write(dataJSON)
 	if err != nil {
 		log.Println(err)
@@ -410,6 +422,7 @@ func (s *Server) handleAnalyticParams(writer http.ResponseWriter, request *http.
 	WriteAnswer(dataJSON, writer)
 }
 
+// ------------------------------------------------------------------------------------------------------
 // static files handler
 func (s *Server) handleFilesList(writer http.ResponseWriter, request *http.Request) {
 	files, err := s.upDownSvc.GetStaticFolderContent()
@@ -431,6 +444,7 @@ func (s *Server) handleFilesList(writer http.ResponseWriter, request *http.Reque
 	WriteAnswer(dataJSON, writer)
 }
 
+// ------------------------------------------------------------------------------------------------------
 // form upload
 func (s *Server) handleFormUpload(writer http.ResponseWriter, request *http.Request) {
 	request.ParseMultipartForm(200 * 1024)
@@ -479,6 +493,95 @@ func (s *Server) handleFormUpload(writer http.ResponseWriter, request *http.Requ
 	WriteAnswer(dataJSON, writer)
 }
 
+func (s *Server) handleFilesUpdateItem(writer http.ResponseWriter, request *http.Request) {
+	// request body
+	var dataUpdate *models.FilesUpdateItemDTO
+	err := json.NewDecoder(request.Body).Decode(&dataUpdate)
+	if err != nil {
+		log.Println(err)
+		//http.Error(writer, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+	fmt.Printf("dataUpdate %+v \n", dataUpdate)
+
+	//
+	err = s.upDownSvc.Files_UpdateDeleteItem("update", dataUpdate)
+	if err != nil {
+		log.Println(err)
+		//http.Error(writer, err.Error(), http.StatusBadRequest)
+		//return
+		data := &models.FilesUpdateItemResponseDTO{
+			File:     dataUpdate.OriginalFile,
+			Status:   false,
+			ErrorStr: err.Error(),
+		}
+		dataJSON, err := json.Marshal(data)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		WriteAnswer2(dataJSON, http.StatusBadRequest, writer)
+		return
+	}
+
+	data := &models.FilesUpdateItemResponseDTO{
+		File:     dataUpdate.OriginalFile,
+		Status:   true,
+		ErrorStr: "",
+	}
+	dataJSON, err := json.Marshal(data)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	WriteAnswer(dataJSON, writer)
+}
+
+func (s *Server) handleFilesDeleteItem(writer http.ResponseWriter, request *http.Request) {
+	// request body
+	var dataDelete *models.FilesUpdateItemDTO
+	err := json.NewDecoder(request.Body).Decode(&dataDelete)
+	if err != nil {
+		log.Println(err)
+		//http.Error(writer, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+	fmt.Printf("dataDelete %+v \n", dataDelete)
+
+	//
+	err = s.upDownSvc.Files_UpdateDeleteItem("delete", dataDelete)
+	if err != nil {
+		log.Println(err)
+		//http.Error(writer, err.Error(), http.StatusBadRequest)
+		//return
+		data := &models.FilesUpdateItemResponseDTO{
+			File:     dataDelete.OriginalFile,
+			Status:   false,
+			ErrorStr: err.Error(),
+		}
+		dataJSON, err := json.Marshal(data)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		WriteAnswer2(dataJSON, http.StatusBadRequest, writer)
+		return
+	}
+
+	data := &models.FilesUpdateItemResponseDTO{
+		File:     dataDelete.OriginalFile,
+		Status:   true,
+		ErrorStr: "",
+	}
+	dataJSON, err := json.Marshal(data)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	WriteAnswer(dataJSON, writer)
+}
+
+// ------------------------------------------------------------------------------------------------------
 // TAGS
 func (s *Server) handleTagsAll(writer http.ResponseWriter, request *http.Request) {
 	tags, err := s.backendGormServ.TagsAll()
