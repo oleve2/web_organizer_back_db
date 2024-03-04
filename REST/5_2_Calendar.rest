@@ -1,0 +1,52 @@
+@URL = http://localhost:9990
+
+###
+POST {{URL}}/api/v1/calendar_grid_by_month
+Content-Type: application/json
+
+{
+  "year_month": "2024-02"
+}
+
+### Items All
+POST {{URL}}/api/v1/calendar_itemsAll
+Content-Type: application/json
+
+{
+  "year_month": "2024-02"
+}
+
+### Items All No Filter
+GET {{URL}}/api/v1/calendar_items_nofiltered
+Content-Type: application/json
+
+
+### Items Insert
+POST {{URL}}/api/v1/calendar_insertOne
+Content-Type: application/json
+
+{
+  "date": "2024-03-01",
+  "name": "Гоша - билет на ",
+  "time_from": "14:00",
+  "time_to": "22:00",
+  "status": "assigned"
+}
+
+### Items Update
+POST {{URL}}/api/v1/calendar_updateOne
+Content-Type: application/json
+
+{
+  "id": 2,
+  "date": "2024-02-15",
+  "name": "Показ мод в Манеже вечером",
+  "time_from": "15:00",
+  "time_to": "23:00",
+  "status": "canceled"
+}
+
+### Items Delete
+POST {{URL}}/api/v1/calendar_deleteOne/3
+Content-Type: application/json
+
