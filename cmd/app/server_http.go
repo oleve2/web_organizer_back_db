@@ -83,6 +83,15 @@ func (s *Server) Init() error {
 		r.Post("/tags_insertOne", s.handleTagsInsertOne)
 		r.Post("/tags_updateOne", s.handleTagsUpdateOne)
 		r.Post("/tags_deleteOne/{del_id}", s.handleTagsDeleteOne)
+
+		// calendar
+		r.Post("/calendar_grid_by_month", s.handleCalendarGridByMonth)
+		r.Get("/calendar_items_nofiltered", s.handleCalendarItemsNofiltered)
+		r.Post("/calendar_itemsAll", s.handleCalendarItemsAll)
+		r.Post("/calendar_insertOne", s.handleCalendarInsertOne)
+		r.Post("/calendar_updateOne", s.handleCalendarUpdateOne)
+		r.Post("/calendar_deleteOne/{del_id}", s.handleCalendarDeleteOne)
+
 	})
 
 	return nil
