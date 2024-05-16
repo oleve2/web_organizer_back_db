@@ -15,6 +15,9 @@ static/
 # database files
 *.db
 
+# executables
+main 
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
