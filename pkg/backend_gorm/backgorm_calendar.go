@@ -126,9 +126,12 @@ func (s *Service) Calend_F01_PrepareBaseArr(yearmonth string) []string {
 	//
 	monthStart, monthEnd := s.Calend_makeMonthStartEndandWeekdays(yearmonth)
 	monthStart_weekday := int(monthStart.Weekday())
+	if monthStart_weekday == 0 {
+		monthStart_weekday = 7
+	}
 	monthEnd_weekday := int(monthEnd.Weekday())
-	//fmt.Println(monthStart, "weekday=", monthStart_weekday)
-	//fmt.Println(monthEnd, "weekday=", monthEnd_weekday)
+	//fmt.Println("monthStart=", monthStart, "weekday=", monthStart_weekday)
+	//fmt.Println("monthEnd=", monthEnd, "weekday=", monthEnd_weekday)
 
 	// tail
 	tail := make([]time.Time, 0)
